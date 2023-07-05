@@ -1,0 +1,41 @@
+.overFileInput{
+    position: absolute;
+    /* height: 100%; */
+    width: 100%;
+    /* width: 40px;
+    height: 40px;
+    background-color: pink; */
+    z-index: 1;
+    pointer-events: none;
+}
+.overFileInput div{
+    width: 100%;
+}
+#relativeContainer{
+    position: relative;
+    width: 100%;
+    @media (min-width: 767px) {
+        max-width: 50%;
+      }
+}
+#relativeContainer div{
+    display: block;
+    height: 100%;
+}
+#relativeContainer input{
+    height: 100%;
+}
+.css-q0jhri-MuiInputBase-root-MuiInput-root:before {
+    display: none;
+}
+/* .relativeConatiner input::before{
+    display: none!important;
+} */
+.container{
+    display: flex;
+}
+.fieldsContainer{
+    padding-left: 20px;
+    max-width: 45%;
+    width: 100%;
+}

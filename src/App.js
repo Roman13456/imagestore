@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+// import logo from './logo.svg';
+// import './App.css';
+// import Button from "./components/button/button";
+
+import PreviewList from './components/previewList/PreviewList';
+import NotFound from './components/NotFound/NotFound';
+import Navigation from './components/Navigation/Navigation';
+import ImagePage from './components/ImagePage/ImagePage';
+import {Route, Routes} from 'react-router-dom';
+import ItemCustomization from './components/ItemCustomization/ItemCustomization';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Navigation/>
+    <Routes>
+        <Route path='images' element={<PreviewList/>}/>
+        <Route path='images/:imageId' element={<ImagePage />}></Route>
+        <Route path='imageCustomization/:mode' element={<ItemCustomization />}>
+          <Route path=':imageId' element={<ItemCustomization />}/>
+        </Route>
+        <Route path="*" element={<NotFound />} /> 
+    </Routes>
+    </>
   );
 }
 

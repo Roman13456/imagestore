@@ -1,0 +1,53 @@
+/* CSS rules for .previewContainer */
+.previewContainer {
+    max-width:27%;
+    /* Media query for screens with a maximum width of 1024px */
+    @media (max-width: 1024px) {
+      max-width: 45%;
+    }
+  
+    /* Media query for screens with a maximum width of 767px */
+    @media (max-width: 767px) {
+      max-width: 90%;
+    }
+  }
+  .itemContainer{
+    background:#5dfcc5;
+    border-radius: 4px;
+    padding:10px
+  }
+  .itemContainer.hovered{
+    background:#1be361
+  }
+  .deleteBtn{
+    z-index: 1;
+    position: relative;
+    width: 25px;
+    border: none;
+    height: 25px;
+    border-radius: 8px;
+    left: 2px;
+  }
+  .deleteBtn img{
+    position: absolute;
+    top:-2px;left: -2px;
+    width: 29px;
+    height: 29px;
+  }
+  .editBtn{
+    z-index: 1;
+    position: relative;
+    border: none;
+    left: 5px;
+    width: 23px;
+    height: 23px;
+    border-radius: 5px;
+  }
+  .editBtn img{
+    position: absolute;
+    top:-4px;
+    left: -2px;
+    width: 29px;
+    height: 29px;
+  }
+  
