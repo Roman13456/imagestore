@@ -7,11 +7,13 @@ import ImagesCollection from '../ImagesCollection/ImagesCollection';
 import context from "../shared/context/postsCtx"
 import ImageAdjust from '../../ImageAdjust/ImageAdjust';
 import CommentsList from '../CommentsList/CommentsList';
+import { useSelector } from 'react-redux';
 // import myImage from './back_1.jpg';
 // import Container from '@mui/material/Container';
 // import Link from '@mui/material/Link';
 function PostPage() {
   const { imageId } = useParams();
+  const user = useSelector((state) => state.USER);
   const initValues = {
     title:"",
     desc:"",
@@ -64,6 +66,7 @@ function PostPage() {
     <div className='imagePage' style={{maxWidth:"1640px",margin:"auto",}}>
         <p>
           <a onClick={onAbort}>Home</a>
+          {user?.admin?<button onClick={()=>navigate(`/imageCustomization/edit/${imageId}`)}>edit</button>:""}
         </p>
         <h1 className='title'>{image?.title || "demo"}</h1>
         <div className='infoContainer'>
