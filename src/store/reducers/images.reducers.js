@@ -6,17 +6,19 @@ const imagesSlice = createSlice({
     },
     reducers: {
         addImagesAction: (state, action) =>{
-            const images =  action.payload.reverse();
+            const images =  action.payload;
             state.images = images;
         },
         updImageAction: (state, action) => {
             const taskObj = action.payload;
-            console.log("obj")
-            console.log( taskObj)
+            // console.log("obj")
+            // console.log("taskObj", taskObj)
             const taskIndex = state.images.findIndex((task) => task._id === taskObj._id);
+            // console.log("taskIndex",taskIndex)
             if (taskIndex > -1) {
                 const updatedTasks = [...state.images];
                 updatedTasks[taskIndex] = taskObj;
+                // console.log("updatedTasks", updatedTasks)
                 state.images = updatedTasks;
             }
         },

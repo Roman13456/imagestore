@@ -1,14 +1,14 @@
 /* CSS rules for .previewContainer */
 .previewContainer {
-    max-width:27%;
+    max-width:33.333333333%;
     /* Media query for screens with a maximum width of 1024px */
     @media (max-width: 1024px) {
-      max-width: 45%;
+      max-width: 50%;
     }
   
     /* Media query for screens with a maximum width of 767px */
     @media (max-width: 767px) {
-      max-width: 90%;
+      max-width: 100%;
     }
   }
   .itemContainer{

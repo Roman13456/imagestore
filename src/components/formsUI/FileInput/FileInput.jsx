@@ -1,38 +1,32 @@
 import React from 'react';
-import { useField } from 'formik';
-import { Input } from "@mui/material";
 
 const FileInput = ({ ...props }) => {
-  const [field, meta, helpers] = useField(props.name);
+  console.log(props)
+  // const [field, meta, helpers] = useField(props.name);
 
-//   const handleChange = (event) => {
-//     console.log("change")
-//     const file = event.target.files[0];
-//     const reader = new FileReader();
+  // const handleChange = (event) => {
+  //   console.log("change")
+  //   // const file = event.target.files[0];
+  //   // const reader = new FileReader();
     
-//     reader.onload = () => {
-//       const fileData = reader.result;
-//       helpers.setValue(fileData);
-//       handleImageChosen(fileData);
-//     };
+  //   // reader.onload = () => {
+  //   //   const fileData = reader.result;
+  //   //   helpers.setValue(fileData);
+  //   //   handleImageChosen(fileData);
+  //   // };
 
-//     reader.readAsDataURL(file);
-//   };
-
-  const handleImageChosen = (imageData) => {
-    // Do something with the image data
-    console.log("Image chosen:", imageData);
-    // Add your custom logic here
-  };
+  //   // reader.readAsDataURL(file);
+  // };
   return (
     <div>
-      <Input
+      <input
         type="file"
+        multiple 
         // onChange={handleChange}
-        {...field}
+        // {...field}
         {...props}
         />
-      {meta.touched && meta.error && <div>{meta.error}</div>}
+      {/* {meta.touched && meta.error && <div>{meta.error}</div>} */}
     </div>
   );
 };

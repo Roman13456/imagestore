@@ -1,0 +1,6 @@
+.commentsList{
+    @media (min-width:768px) {
+        margin-left:50%;
+        padding-left: 50px;
+    }
+}

@@ -1,0 +1,17 @@
+.background{
+    border-radius: 4px;
+    width: 80px;
+    background-color: grey;
+    position: relative;
+    height: 80px;
+    margin: 0 5px;
+}
+.background img{
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    max-width: 100%;
+}
+.background .deleteBtn{
+    left:52px
+}

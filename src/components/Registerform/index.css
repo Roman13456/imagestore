@@ -1,0 +1,36 @@
+.loginForm input{
+    background-color: white;    
+}
+.loginForm{
+    height: 420px;
+    max-width:500px;
+    margin:auto;
+    padding:20px 10px; 
+    @media (min-width:767px) {
+        padding:20px; 
+    }
+    border-radius:10px; 
+    border:2px solid #65a2e9;
+    background-color:#f1ebeb;
+}
+.loginForm.signupForm{
+    height: 470px;
+}
+.loginForm .formTitle{
+    text-align:center;
+}
+.loginForm .hideContents{
+    display: none;
+}
+.formContainerInputs{
+    position: relative;
+    flex-direction:column;
+    display:flex;
+    height: 280px;
+}
+.spinerAndInputContainerPositioned{
+    height: 100%;
+}
+.signupForm .formContainerInputs{
+    height: 350px;
+}

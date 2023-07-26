@@ -1,0 +1,32 @@
+.commentItem{
+    margin-left: 10px;
+    padding: 5px;
+    width: 100%;
+    display:flex;
+    padding-left: 0;
+    /* border-left: 1px solid brown; */
+    margin-bottom: 20px;
+}
+.commentItem .hideRepliesToComm{
+    display: none;
+}
+.commentItem p{
+    margin-bottom: 0;
+    width: fit-content;
+}
+.commentItem .hideRepliesBtn{
+    margin: -5px 0 -5px;
+    width: 100%;
+    max-width: 2px;
+    background-color: brown;
+    cursor: pointer;
+}
+.commentItem .commentField{
+    width: 100%;
+    margin-left: 5px;
+}
+.currentUserCommentName{
+    background-color: grey;
+    border-radius: 2px;
+    color: wheat;
+}
