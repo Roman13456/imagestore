@@ -1,5 +1,5 @@
 import axios from 'axios'
-const IMAGE_URL = 'http://localhost:3001/'
+const IMAGE_URL = 'https://imagestore-demo-server.onrender.com/'
 export const checkCredentials = async (obj) => {
     try {
       const res = await axios.post(IMAGE_URL + "login", obj);

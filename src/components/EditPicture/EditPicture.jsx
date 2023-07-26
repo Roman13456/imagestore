@@ -1,12 +1,7 @@
-import {useState,useEffect, useRef} from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-// import Comments from '../Comments/Comments';
-import { fetchBackgrounds } from './backgroundsApi';
+
 import Background from './background/Background';
 import './index.css';
 import plus from "./plus.png"
-import { createBackground } from './backgroundsApi';
-import { loadImage } from '../images/imageApi';
 // import myImage from './back_1.jpg';
 // import Container from '@mui/material/Container';
 // import Link from '@mui/material/Link';

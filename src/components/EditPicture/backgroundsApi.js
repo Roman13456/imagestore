@@ -1,5 +1,5 @@
 import axios from 'axios'
-const BACKGROUND_URL = 'http://localhost:3001/backgrounds'
+const BACKGROUND_URL = 'https://imagestore-demo-server.onrender.com/backgrounds'
 export const fetchBackgrounds = async () => {
     try {
       const res = await axios.get(BACKGROUND_URL, {

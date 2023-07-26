@@ -1,5 +1,6 @@
 import axios from 'axios'
-const IMAGE_URL = 'http://localhost:3001/images'
+const IMAGE_URL = 'https://imagestore-demo-server.onrender.com/images'//    http://localhost:3001/images
+const IMAGE_URL_BASE = 'https://imagestore-demo-server.onrender.com'
 export const fetchImages = async (pageNum=0, limit=9) => {
   try {
     const res = await axios.get(IMAGE_URL+`?page=${pageNum}&limit=${limit}`, {
@@ -24,7 +25,7 @@ export const loadImage = async (selectedFile) => {
   const formData = new FormData();
   formData.append('file', selectedFile);
   try {
-    const response = await axios.post('http://localhost:3001/upload', formData);
+    const response = await axios.post(IMAGE_URL_BASE+"/upload", formData);
 
     if (response.status === 200) {
       // File upload successful
@@ -41,7 +42,7 @@ export const loadImage = async (selectedFile) => {
 };
 export const delImage = async (id) => {
   try {
-    const response = await axios.delete('http://localhost:3001/delete/'+id);
+    const response = await axios.delete(IMAGE_URL_BASE+`/delete/${id}`);
 
     if (response.status === 200) {
       // File upload successful

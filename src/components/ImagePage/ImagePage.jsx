@@ -93,33 +93,6 @@ function PostPage() {
         {/* <ImagesCollection pics={image.pictures}/> */}
         
         {/* <img src={image?.img_url || "#"}></img> */}
-        {/*{
-            name:"mi10t",
-            text:"demo_text_1",
-            comments:[
-            {
-              name:"mi11t",
-              text:"demo_text_2",
-              comments:[{
-                name:"mi12t",
-                text:"demo_text_3",
-                comments:[]
-              }]
-            }]
-          },{
-            name:"mi10t",
-            text:"demo_text_1",
-            comments:[
-            {
-              name:"mi11t",
-              text:"demo_text_2",
-              comments:[{
-                name:"mi12t",
-                text:"demo_text_3",
-                comments:[]
-              }]
-            }]
-          } */}
         <CommentsList image={image} setImage={setImage} list={image?.comments || []}/>
     </div>
   );
