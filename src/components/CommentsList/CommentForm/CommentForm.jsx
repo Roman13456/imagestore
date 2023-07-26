@@ -68,7 +68,7 @@ function CommentsForm({ image, setImage,pos , cb,mode}) {
     async function onSave({comment},{ setSubmitting, setErrors }){
         setInitialValues({comment:""})
         console.log(pos)
-        if(mode.mode==="edit"){
+        if(mode?.mode==="edit"){
             const copy = JSON.parse(JSON.stringify(image))
             if(!copy.comments){
                 copy.comments = []
