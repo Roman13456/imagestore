@@ -76,6 +76,26 @@ function CommentsList({imageId}) {
       console.log("same user")
     }
   }
+  function deleteOnSseEvent({userId, commentId, replyId=undefined}){
+    const copy = JSON.parse(JSON.stringify(comms))
+    if(user && user?._id!==userId){
+      if(replyId){
+        const idx = copy.findIndex(e=>e._id===commentId)
+        if(idx!==-1){
+          const replyIdx = copy[idx].replies.findIndex(e=>e._id===replyId)
+          copy[idx].replies[replyIdx].deleted = true
+          setComms(copy)
+        }
+      }else{
+        const idx = copy.findIndex(e=>e._id===commentId)
+        if(idx!==-1){
+          console.log(copy[idx])
+          copy[idx].deleted = true
+          setComms(copy)
+        }
+      }
+    }
+  }
   useEffect(() => {
     // Listen for the 'newComment' event and update the comments state
     console.log('useEffect listening for newComment event');
@@ -88,6 +108,12 @@ function CommentsList({imageId}) {
       socket.on('updatedComment', (updatedComment) => {
         console.log("updatedComment just right away", updatedComment)
         updateOnSseEvent(updatedComment)
+        //add comment handle
+      });
+      socket.on('deletedComment', (deletedComment) => {
+        console.log("deletedComment just right away", deletedComment)
+        deleteOnSseEvent(deletedComment)
+        // updateOnSseEvent(deletedComment)
         //add comment handle
       });
     }

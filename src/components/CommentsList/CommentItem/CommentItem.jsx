@@ -4,7 +4,7 @@ import { patchImage } from "../../images/imageApi";
 import { delComment, delReply } from "../commentApi";
 import CommentsForm from "../CommentForm/CommentForm";
 import "./index.css"
-function CommentItem({nestedLvl,item,param,parentId,comms, setComms,socket}) {
+function CommentItem({item,param,parentId,comms, setComms,socket}) {
   // console.log("item",item)
   // console.log("CommentItem_image",image)
   const user = useSelector((state) => state.USER);
@@ -18,6 +18,10 @@ function CommentItem({nestedLvl,item,param,parentId,comms, setComms,socket}) {
       const idx = copy.findIndex(e=>e._id===commentId)
       if(idx!==-1){
         copy.splice(idx,1)
+        socket.emit('deletedComment', {
+          userId: user._id,
+          commentId
+        });
         setComms(copy)
       }
     }
@@ -32,10 +36,15 @@ function CommentItem({nestedLvl,item,param,parentId,comms, setComms,socket}) {
       if (commentIndex !== -1) {
         // Find the index of the reply with replyId in the replies array of the comment
         const replyIndex = copy[commentIndex].replies.findIndex((r) => r._id === replyId);
-  
+        
         if (replyIndex !== -1) {
           // Remove the reply from the replies array of the comment
           copy[commentIndex].replies.splice(replyIndex, 1);
+          socket.emit('deletedComment', { 
+            userId: user._id,
+            commentId,
+            replyId
+          });
           setComms(copy);
         }
       }
@@ -46,6 +55,8 @@ function CommentItem({nestedLvl,item,param,parentId,comms, setComms,socket}) {
       <div className={`commentItem ${param?"hideRepliesToComm":""}`}>{/*style={{marginLeft:"50%", padding:"0 0 0 50px"}} */}
         <div className="hideRepliesBtn" onClick={()=>{setShowComms(false)}}></div>
         <div className="commentField">
+          {
+            item?.deleted?<p>Deleted comment</p>:<>
             <p className={`${user?.nickname===item?.nickname.nickname?"currentUserCommentName":""}`}>{item?.nickname.nickname || "demo_name"}</p>
             <p>{item.commentText || "demo_text"}</p>
             <button onClick={()=>{setForm(true);setShowComms(true); setMode({})}}>Reply</button>
@@ -56,6 +67,8 @@ function CommentItem({nestedLvl,item,param,parentId,comms, setComms,socket}) {
             {form?<CommentsForm comms={comms} setComms={setComms} socket={socket} idForReply = {!parentId?item._id:parentId} mode={mode} text={'@'+item?.nickname.nickname+" "} pos={parentId?2:1} cb={()=>setForm(false)}></CommentsForm>:""}
             
             {item?.replies?.map((e,idx)=><CommentItem socket={socket}  comms={comms} setComms={setComms} param={showComms?0:1} parentId={item._id} item={e} key={idx}/>)}
+            </>
+          }
             
             
 
