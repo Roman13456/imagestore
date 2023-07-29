@@ -4,7 +4,7 @@ import { patchImage } from "../../images/imageApi";
 import { delComment, delReply } from "../commentApi";
 import CommentsForm from "../CommentForm/CommentForm";
 import "./index.css"
-function CommentItem({nestedLvl,item,param,parentId,comms, setComms}) {
+function CommentItem({nestedLvl,item,param,parentId,comms, setComms,socket}) {
   // console.log("item",item)
   // console.log("CommentItem_image",image)
   const user = useSelector((state) => state.USER);
@@ -64,11 +64,11 @@ function CommentItem({nestedLvl,item,param,parentId,comms, setComms}) {
             <p>{item.commentText || "demo_text"}</p>
             <button onClick={()=>{setForm(true);setShowComms(true)}}>Reply</button>
             {item?.replies?.length && !showComms?<button onClick={()=>{setShowComms(true)}}>{item?.replies?.length} answers</button>:""}
-            {form?<CommentsForm comms={comms} setComms={setComms} idForReply = {!parentId?item._id:parentId} mode={mode} text={'@'+item?.nickname.nickname+" "} pos={1} cb={()=>setForm(false)}></CommentsForm>:""}
+            {form?<CommentsForm comms={comms} setComms={setComms} socket={socket} idForReply = {!parentId?item._id:parentId} mode={mode} text={'@'+item?.nickname.nickname+" "} pos={1} cb={()=>setForm(false)}></CommentsForm>:""}
             
             {(user?.nickname===item?.nickname.nickname )|| user?.admin?<button onClick={()=>param===undefined?onDelComm(item._id):onDelReply(parentId,item._id)}>Del</button>:""} 
             
-            {item?.replies?.map((e,idx)=><CommentItem  comms={comms} setComms={setComms} param={showComms?0:1} parentId={item._id} item={e} key={idx}/>)}
+            {item?.replies?.map((e,idx)=><CommentItem socket={socket}  comms={comms} setComms={setComms} param={showComms?0:1} parentId={item._id} item={e} key={idx}/>)}
             {/* {(user?.nickname===item?.name )|| user?.admin?<button onClick={()=>onDel(item.id )}>Del</button>:""} 
             
             

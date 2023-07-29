@@ -13,23 +13,12 @@ import { patchImage } from "../../images/imageApi";
 import { useSelector } from "react-redux";
 import io from 'socket.io-client';
 import { postComment, postReply } from "../commentApi";
-function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text}) {
+function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text,socket}) {
     const [spin,setSpin] = useState(false)
     const [result, setResult] = useState(false)
     const [msg, setMsg] = useState("")
     const { imageId } = useParams();
     const user = useSelector((state) => state.USER);
-    const [socket, setSocket] = useState(null);
-    useEffect(() => {
-        // Connect to the Socket.IO server
-        const newSocket = io(process.env.REACT_APP_BACKEND_URL);
-        setSocket(newSocket);
-    
-        // Clean up the WebSocket connection on unmount
-        return () => {
-          newSocket.disconnect();
-        };
-      }, []);
     const [initialValues,setInitialValues] = useState({
         comment:mode?.mode==="edit"?mode.item.text:(text || ""),
     }) 
