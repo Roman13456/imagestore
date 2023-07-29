@@ -68,7 +68,7 @@ function CommentsList({imageId}) {
   return (
     
     <div className='commentsList' style={{}}>
-      <CommentsForm comms={comms} setComms={setComms} pos={0}></CommentsForm>
+      <CommentsForm comms={comms} socket={socket} setComms={setComms} pos={0}></CommentsForm>
       
       {comms.map((e,idx)=><CommentItem socket={socket} comms={comms} setComms={setComms} key={idx} item={e}></CommentItem>)}
     </div>
