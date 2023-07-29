@@ -90,6 +90,7 @@ function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text}) {
                     nickname:user.nickname
                 }})
                 if(socket){
+            
                     socket.emit('newComment', {pos:0, userId: user._id,obj:{...data.comment, nickname:{
                         nickname:user.nickname
                     }}});
@@ -110,6 +111,7 @@ function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text}) {
                     console.log(data.reply)
                     copy[idx].replies.push({...data.reply, nickname:{nickname:user.nickname}})
                     if(socket){
+                        console.log("emit??",socket)
                         socket.emit('newComment', {pos:idForReply,userId:user._id ,obj:{...data.reply, nickname:{nickname:user.nickname}}});
                     }else{
                         console.log("socket is not connected")
