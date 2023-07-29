@@ -38,7 +38,7 @@ function SliderPagination({limit,page,onsetPage}) {
     if(count!==0){
       let trigger0 = 1
       let pages = count-1>6?6:count-1
-      console.log("current page is:", page+1)
+      // console.log("current page is:", page+1)
       // let i = 0 
       while(pages>0){
         if(trigger0){
@@ -47,17 +47,17 @@ function SliderPagination({limit,page,onsetPage}) {
               pages-=1
               lim0+=1
           }
-          console.log(lim0,lim1)
+          // console.log(lim0,lim1)
         }else{
           trigger0=1
           if(count- initpage-lim1>=1){
             pages-=1
             lim1+=1
           }
-          console.log(lim0,lim1)
+          // console.log(lim0,lim1)
         }
       }
-      console.log(lim0,lim1)
+      // console.log(lim0,lim1)
     }
   }
   distributeFreePages()

@@ -1,6 +1,6 @@
 import axios from 'axios'
-const IMAGE_URL = 'https://imagestore-demo-server.onrender.com/images'//    http://localhost:3001/images
-const IMAGE_URL_BASE = 'https://imagestore-demo-server.onrender.com'
+const IMAGE_URL = process.env.REACT_APP_BACKEND_URL+"/images"//    http://localhost:3001/images
+const IMAGE_URL_BASE = process.env.REACT_APP_BACKEND_URL
 export const fetchImages = async (pageNum=0, limit=9) => {
   try {
     const res = await axios.get(IMAGE_URL+`?page=${pageNum}&limit=${limit}`, {

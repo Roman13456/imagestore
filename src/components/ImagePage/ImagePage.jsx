@@ -28,13 +28,14 @@ function PostPage() {
   useEffect(() => {
     async function init() {
       const imageInfo = await fetchImage(imageId)
+      // console.log(imageInfo)
       setImage(imageInfo)
     }
     init()
   }, []);
   const imageHeight = 600;
   const imageRef = useRef()
-  console.log(image.pictures[chosenPic])
+  // console.log(image.pictures[chosenPic])
 
   //adjusting image height
   const container = useRef();
@@ -96,7 +97,7 @@ function PostPage() {
         {/* <ImagesCollection pics={image.pictures}/> */}
         
         {/* <img src={image?.img_url || "#"}></img> */}
-        <CommentsList image={image} setImage={setImage} list={image?.comments || []}/>
+        <CommentsList imageId={imageId}/>
     </div>
   );
 }

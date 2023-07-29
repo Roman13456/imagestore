@@ -5,20 +5,33 @@ import * as yup from 'yup'
 import { v4 as uuidv4 } from 'uuid';
 import Button from '@mui/material/Button';
 import { Formik, Field, ErrorMessage, Form} from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SpinnerVar from "../../Spinner/Spinner";
 import SubmitBtn from "../../shared/ui/SubmintBtn";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { patchImage } from "../../images/imageApi";
 import { useSelector } from "react-redux";
-function CommentsForm({ image, setImage,pos , cb,mode}) {
+import io from 'socket.io-client';
+import { postComment, postReply } from "../commentApi";
+function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text}) {
     const [spin,setSpin] = useState(false)
     const [result, setResult] = useState(false)
     const [msg, setMsg] = useState("")
+    const { imageId } = useParams();
     const user = useSelector((state) => state.USER);
-
+    const [socket, setSocket] = useState(null);
+    useEffect(() => {
+        // Connect to the Socket.IO server
+        const newSocket = io(process.env.REACT_APP_BACKEND_URL);
+        setSocket(newSocket);
+    
+        // Clean up the WebSocket connection on unmount
+        return () => {
+          newSocket.disconnect();
+        };
+      }, []);
     const [initialValues,setInitialValues] = useState({
-        comment:mode?.mode==="edit"?mode.item.text:"",
+        comment:mode?.mode==="edit"?mode.item.text:(text || ""),
     }) 
     // console.log("image",image)
     const commentSchema = yup.object().shape({
@@ -68,61 +81,101 @@ function CommentsForm({ image, setImage,pos , cb,mode}) {
     async function onSave({comment},{ setSubmitting, setErrors }){
         setInitialValues({comment:""})
         console.log(pos)
-        if(mode?.mode==="edit"){
-            const copy = JSON.parse(JSON.stringify(image))
-            if(!copy.comments){
-                copy.comments = []
-            }
-            findCommentAndChangeComm(copy.comments,comment)
-            const data = await patchImage(copy._id,copy)
-            if(typeof data==="object"){
-                setImage(data)
-            }
-            if(pos!==0){
-                // console.log("cb()")
-                cb()
-            }
-            return
-        }
         if(pos===0){
-            
-            const copy = JSON.parse(JSON.stringify(image))
-            if(!copy.comments){
-                copy.comments = []
+            const data= await postComment({productId:imageId, nickname: user._id, commentText:comment})
+            if(data.success){
+                console.log("data",data)
+                const copy = [...comms]
+                copy.unshift({...data.comment, nickname:{
+                    nickname:user.nickname
+                }})
+                if(socket){
+                    socket.emit('newComment', {pos:0, userId: user._id,obj:{...data.comment, nickname:{
+                        nickname:user.nickname
+                    }}});
+                }else{
+                    alert("socket is not connected")
+                }
+                
+                setComms(copy)
             }
-            copy.comments.unshift({
-                id: uuidv4(),
-                name:user?.nickname || "demo_user",
-                text:comment
-            })
-            console.log("added comm", copy)
-            // setSpin(true)
-            
-            const data = await patchImage(copy._id,copy)
-            if(typeof data==="object"){
-                setImage(data)
-            }
-            // console.log("copy",copy)
-            
-            // // console.log("data",data)
-            // // setSpin(false);
-            
         }else{
-            console.log(image)
-            const copy = JSON.parse(JSON.stringify(image))
-            if(!copy.comments){
-                copy.comments = []
-            }
-            findCommentAndPasteReply(copy.comments, comment)
-            const data = await patchImage(copy._id,copy)
-            if(typeof data==="object"){
-                setImage(data)
-            }
-            if(pos!==0){
-                // console.log("cb()")
-                cb()
+            const data= await postReply(idForReply, {nickname: user._id, commentText:comment})
+            if(data.success){
+                const idx = comms.findIndex(e=> e._id===idForReply)
+                console.log("idx",idx)
+                if(idx!==-1){
+                    const copy = [...JSON.parse(JSON.stringify(comms))]
+                    console.log("copy",copy);
+                    console.log(data.reply)
+                    copy[idx].replies.push({...data.reply, nickname:{nickname:user.nickname}})
+                    if(socket){
+                        socket.emit('newComment', {pos:idForReply,userId:user._id ,obj:{...data.reply, nickname:{nickname:user.nickname}}});
+                    }else{
+                        alert("socket is not connected")
+                    }
+                    setComms(copy)
+                    cb()
+                }
+                
             }
         }
+        
+        // if(mode?.mode==="edit"){
+        //     const copy = JSON.parse(JSON.stringify(image))
+        //     if(!copy.comments){
+        //         copy.comments = []
+        //     }
+        //     findCommentAndChangeComm(copy.comments,comment)
+        //     const data = await patchImage(copy._id,copy)
+        //     if(typeof data==="object"){
+        //         setImage(data)
+        //     }
+        //     if(pos!==0){
+        //         // console.log("cb()")
+        //         cb()
+        //     }
+        //     return
+        // }
+        // if(pos===0){
+            
+        //     const copy = JSON.parse(JSON.stringify(image))
+        //     if(!copy.comments){
+        //         copy.comments = []
+        //     }
+        //     copy.comments.unshift({
+        //         id: uuidv4(),
+        //         name:user?.nickname || "demo_user",
+        //         text:comment
+        //     })
+        //     console.log("added comm", copy)
+        //     // setSpin(true)
+            
+        //     const data = await patchImage(copy._id,copy)
+        //     if(typeof data==="object"){
+        //         setImage(data)
+        //     }
+        //     // console.log("copy",copy)
+            
+        //     // // console.log("data",data)
+        //     // // setSpin(false);
+            
+        // }else{
+        //     console.log(image)
+        //     const copy = JSON.parse(JSON.stringify(image))
+        //     if(!copy.comments){
+        //         copy.comments = []
+        //     }
+        //     findCommentAndPasteReply(copy.comments, comment)
+        //     const data = await patchImage(copy._id,copy)
+        //     if(typeof data==="object"){
+        //         setImage(data)
+        //     }
+        //     if(pos!==0){
+        //         // console.log("cb()")
+        //         cb()
+        //     }
+        // }
         // setSpin(true)
         // const {data} = await resetPassword(email)
         // setResult(true)
