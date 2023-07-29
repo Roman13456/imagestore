@@ -62,7 +62,7 @@ function CommentsList({imageId}) {
         //add comment handle
       });
     }
-  }, [socket]);
+  }, [socket,user, comms]);
 
   return (
     
