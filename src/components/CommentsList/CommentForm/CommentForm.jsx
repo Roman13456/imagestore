@@ -94,7 +94,7 @@ function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text}) {
                         nickname:user.nickname
                     }}});
                 }else{
-                    alert("socket is not connected")
+                    console.log("socket is not connected")
                 }
                 
                 setComms(copy)
@@ -112,7 +112,7 @@ function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text}) {
                     if(socket){
                         socket.emit('newComment', {pos:idForReply,userId:user._id ,obj:{...data.reply, nickname:{nickname:user.nickname}}});
                     }else{
-                        alert("socket is not connected")
+                        console.log("socket is not connected")
                     }
                     setComms(copy)
                     cb()
