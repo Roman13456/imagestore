@@ -35,10 +35,11 @@ function CommentsList({imageId}) {
     
   },[])
   function pastedOnSseEvent({obj,userId,pos}){
+    console.log("userId(the one who emitted)", userId, "; id of receiver",user?._id)
     if(user && user?._id!==userId){
       if(pos===0){
         const copy = [...comms]
-        copy.unshift(obj)          
+        copy.push(obj)          
         setComms(copy)
       }else{
         const idx = comms.findIndex(e=> e._id===pos)
