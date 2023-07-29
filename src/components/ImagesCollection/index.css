@@ -9,7 +9,6 @@
     position: relative;
     overflow: hidden;
     max-width: 216px;
-    margin: auto;
     @media (min-width:375px) {
         max-width: 324px;
     }

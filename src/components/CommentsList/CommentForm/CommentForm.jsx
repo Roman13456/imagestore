@@ -12,7 +12,7 @@ import { Link, useParams } from "react-router-dom";
 import { patchImage } from "../../images/imageApi";
 import { useSelector } from "react-redux";
 import io from 'socket.io-client';
-import { postComment, postReply } from "../commentApi";
+import { patchComment, patchReply, postComment, postReply } from "../commentApi";
 function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text,socket}) {
     const [spin,setSpin] = useState(false)
     const [result, setResult] = useState(false)
@@ -20,7 +20,7 @@ function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text,socket}) {
     const { imageId } = useParams();
     const user = useSelector((state) => state.USER);
     const [initialValues,setInitialValues] = useState({
-        comment:mode?.mode==="edit"?mode.item.text:(text || ""),
+        comment:mode?.mode==="edit"?mode.item.commentText:(text || ""),
     }) 
     // console.log("image",image)
     const commentSchema = yup.object().shape({
@@ -69,7 +69,40 @@ function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text,socket}) {
     }
     async function onSave({comment},{ setSubmitting, setErrors }){
         setInitialValues({comment:""})
-        console.log(pos)
+        console.log(mode)
+        if(mode && mode?.mode==="edit"){
+            if(pos===1){
+                const data= await patchComment(mode.item._id, {commentText:comment})
+                if(data.success){
+                    const copy = JSON.parse(JSON.stringify(comms))
+                    const idx = copy.findIndex(e=>e._id===mode.item._id)
+                    copy[idx] = data.patchedComment
+                    socket.emit('updatedComment', {
+                        pos:0, 
+                        userId: user._id,
+                        obj:data.patchedComment
+                    });
+                    setComms(copy)
+                }
+            }else{
+                const data= await patchReply(idForReply,mode.item._id, {commentText:comment})
+                if(data.success){
+                    const copy = JSON.parse(JSON.stringify(comms))
+                    const idx = copy.findIndex(e=>e._id===idForReply)
+                    const replyIdx = copy[idx].replies.findIndex(e=>e._id===mode.item._id)
+                    copy[idx].replies[replyIdx] = data.updatedReply
+                    socket.emit('updatedComment', {
+                        pos:1, 
+                        idForReply,
+                        userId: user._id,
+                        obj:data.updatedReply
+                    });
+                    setComms(copy)
+                }
+            }
+            cb()
+            return
+        }
         if(pos===0){
             const data= await postComment({productId:imageId, nickname: user._id, commentText:comment})
             if(data.success){

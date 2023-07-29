@@ -41,20 +41,6 @@ function CommentItem({nestedLvl,item,param,parentId,comms, setComms,socket}) {
       }
     }
   }
-  
-  // function onDeleteComment(commentArray, commentId) {
-  //   if(Array.isArray(commentArray)){
-  //     for (let i = 0; i < commentArray.length; i++) {
-  //       if (commentArray[i].id === commentId) {
-  //         commentArray.splice(i, 1); // Remove the comment at index i
-  //         return; // Stop the loop as we found and removed the comment
-  //       }
-  //       if (Array.isArray(commentArray[i].comments)) {
-  //         onDeleteComment(commentArray[i].comments, commentId); // Recursively search in nested comments
-  //       }
-  //     }
-  //   }
-  // }
     return (
       
       <div className={`commentItem ${param?"hideRepliesToComm":""}`}>{/*style={{marginLeft:"50%", padding:"0 0 0 50px"}} */}
@@ -62,13 +48,17 @@ function CommentItem({nestedLvl,item,param,parentId,comms, setComms,socket}) {
         <div className="commentField">
             <p className={`${user?.nickname===item?.nickname.nickname?"currentUserCommentName":""}`}>{item?.nickname.nickname || "demo_name"}</p>
             <p>{item.commentText || "demo_text"}</p>
-            <button onClick={()=>{setForm(true);setShowComms(true)}}>Reply</button>
+            <button onClick={()=>{setForm(true);setShowComms(true); setMode({})}}>Reply</button>
             {item?.replies?.length && !showComms?<button onClick={()=>{setShowComms(true)}}>{item?.replies?.length} answers</button>:""}
-            {form?<CommentsForm comms={comms} setComms={setComms} socket={socket} idForReply = {!parentId?item._id:parentId} mode={mode} text={'@'+item?.nickname.nickname+" "} pos={1} cb={()=>setForm(false)}></CommentsForm>:""}
-            
             {(user?.nickname===item?.nickname.nickname )|| user?.admin?<button onClick={()=>param===undefined?onDelComm(item._id):onDelReply(parentId,item._id)}>Del</button>:""} 
+            {(user?.nickname===item?.nickname.nickname )?<button onClick={()=>{setForm(true); setMode({mode:"edit", item})}}>Edit</button>:""} 
+            
+            {form?<CommentsForm comms={comms} setComms={setComms} socket={socket} idForReply = {!parentId?item._id:parentId} mode={mode} text={'@'+item?.nickname.nickname+" "} pos={parentId?2:1} cb={()=>setForm(false)}></CommentsForm>:""}
             
             {item?.replies?.map((e,idx)=><CommentItem socket={socket}  comms={comms} setComms={setComms} param={showComms?0:1} parentId={item._id} item={e} key={idx}/>)}
+            
+            
+
             {/* {(user?.nickname===item?.name )|| user?.admin?<button onClick={()=>onDel(item.id )}>Del</button>:""} 
             
             

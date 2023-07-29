@@ -53,6 +53,29 @@ function CommentsList({imageId}) {
       console.log("same user")
     }
   }
+  function updateOnSseEvent({obj,userId,pos,idForReply=undefined}){
+    console.log("userId(the one who emitted)", userId, "; id of receiver",user?._id)
+    if(user && user?._id!==userId){
+      if(idForReply){
+        const copy = JSON.parse(JSON.stringify(comms))
+        const idx = copy.findIndex(e=>e._id===idForReply)
+        console.log("idx:",idx, "; copy[idx]:",copy[idx])
+        if(idx!==-1){
+          console.log(copy[idx].replies)
+          const replyIdx = copy[idx].replies.findIndex(e=>e._id===obj._id)
+          copy[idx].replies[replyIdx] = obj
+        }
+        setComms(copy)
+      }else{
+        const copy = JSON.parse(JSON.stringify(comms))
+        const idx = copy.findIndex(e=>e._id===obj._id)
+        copy[idx] = obj
+        setComms(copy)
+      }
+    }else{
+      console.log("same user")
+    }
+  }
   useEffect(() => {
     // Listen for the 'newComment' event and update the comments state
     console.log('useEffect listening for newComment event');
@@ -60,6 +83,11 @@ function CommentsList({imageId}) {
       socket.on('newComment', (newComment) => {
         console.log("added new comment just right away", newComment)
         pastedOnSseEvent(newComment)
+        //add comment handle
+      });
+      socket.on('updatedComment', (updatedComment) => {
+        console.log("updatedComment just right away", updatedComment)
+        updateOnSseEvent(updatedComment)
         //add comment handle
       });
     }

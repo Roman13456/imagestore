@@ -19,6 +19,24 @@ export const postComment = async (obj) => {
       return err.response.data
     }
   };
+
+  export const patchComment = async (id,obj) => {
+    try {
+      const res = await axios.patch(COMMENTS_URL+`/${id}`, obj);
+      return res.data
+    } catch (err) {
+      return err.response.data
+    }
+  };
+  export const patchReply = async (commentId, replyId,obj) => {
+    console.log(commentId, replyId)
+    try {
+      const res = await axios.patch(COMMENTS_URL+`/${commentId}/replies/${replyId}`, obj);
+      return res.data
+    } catch (err) {
+      return err.response.data
+    }
+  };
   export const delComment = async (id) => {
     try {
       const res = await axios.delete(COMMENTS_URL+`/${id}`);
