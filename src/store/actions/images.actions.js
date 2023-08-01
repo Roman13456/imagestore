@@ -38,7 +38,7 @@ export function removeImageRequestThunk(id){
         dispatch(delImageAction(id))
     }
 }
-export function patchImageRequestThunk(obj){
+export function patchImageRequestThunk(obj,socket){
     console.log(obj)
     return async (dispatch)=>{
         // for(let i=0; i<obj.pictures.length;i++){
@@ -50,8 +50,13 @@ export function patchImageRequestThunk(obj){
         //     }
         // }
         const image = await patchImage(obj._id,{...obj, pictures:obj.pictures})
-        console.log("patchImageRequestThunkimage",image)
-        dispatch(updImageAction(image))
+        if(image.success){
+            socket.emit('editCartProduct', image.data);
+            // console.log("patchImageRequestThunkimage",image)
+            dispatch(updImageAction(image.data))
+        }
+        
+        
     }
 }
 // export function changeTodoRequestAction(id){

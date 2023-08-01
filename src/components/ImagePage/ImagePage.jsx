@@ -2,18 +2,21 @@ import {useState,useEffect, useRef} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 // import Comments from '../Comments/Comments';
 import { fetchImage } from "../images/imageApi";
+import Button from '@mui/material/Button';
 import './index.css';
 import ImagesCollection from '../ImagesCollection/ImagesCollection';
 import context from "../shared/context/postsCtx"
 import ImageAdjust from '../../ImageAdjust/ImageAdjust';
 import CommentsList from '../CommentsList/CommentsList';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProductRequestThunk } from '../../store/actions/cart.actions';
 // import myImage from './back_1.jpg';
 // import Container from '@mui/material/Container';
 // import Link from '@mui/material/Link';
-function PostPage() {
+function PostPage({socket}) {
   const { imageId } = useParams();
   const user = useSelector((state) => state.USER);
+  const cart = useSelector((state)=>state.CART);
   const initValues = {
     title:"",
     desc:"",
@@ -21,7 +24,9 @@ function PostPage() {
   }
   const [chosenPic, setChosenPic] = useState(0)
   const [image, setImage] = useState(initValues);
+  const [isAddedToCart, setIsAddedToCart] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   function onAbort() {
     navigate('/images')
 }
@@ -32,7 +37,17 @@ function PostPage() {
       setImage(imageInfo)
     }
     init()
+    
   }, []);
+  useEffect(()=>{
+    let bool = false;
+    cart?.products.forEach(e=>{
+      if(e._id===imageId){
+        bool=true
+      }
+    })
+    setIsAddedToCart(bool)
+  },[cart])
   const imageHeight = 600;
   const imageRef = useRef()
   // console.log(image.pictures[chosenPic])
@@ -62,6 +77,10 @@ function PostPage() {
         window.removeEventListener('resize', handleResize);
       };
     }, [chosenPic]);
+    
+  function addToCart(){
+    dispatch(addProductRequestThunk(cart._id,image ))
+  }
   return (
     
     <div className='imagePage' style={{maxWidth:"1640px",margin:"auto",}}>
@@ -91,6 +110,8 @@ function PostPage() {
             <div className='desc'>
               <h4>Опис товару:</h4>
               <p>{image?.desc || "demo"}</p>
+              <Button variant="contained" disabled={isAddedToCart || !user} onClick={addToCart}>{isAddedToCart?"Already added to cart":"Add to cart"}</Button>
+              {!user?<p>You should be signed up in order to add pictures to cart</p>:""}
             </div>
           </div>
         </div>

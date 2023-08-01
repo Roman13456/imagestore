@@ -102,18 +102,29 @@ function CommentsList({imageId}) {
     if (socket) {
       socket.on('newComment', (newComment) => {
         console.log("added new comment just right away", newComment)
-        pastedOnSseEvent(newComment)
+        if(newComment.obj.productId===imageId) {
+          pastedOnSseEvent(newComment)
+        }else{
+          console.log("not the same product")
+        }
         //add comment handle
       });
       socket.on('updatedComment', (updatedComment) => {
         console.log("updatedComment just right away", updatedComment)
-        updateOnSseEvent(updatedComment)
+        if(updatedComment.obj.productId===imageId) {
+          updateOnSseEvent(updatedComment)
+        }else{
+          console.log("not the same product")
+        }
         //add comment handle
       });
       socket.on('deletedComment', (deletedComment) => {
         console.log("deletedComment just right away", deletedComment)
-        deleteOnSseEvent(deletedComment)
-        // updateOnSseEvent(deletedComment)
+        if(deletedComment.productId===imageId){
+          deleteOnSseEvent(deletedComment)
+        }else{
+          console.log("not the same product")
+        }
         //add comment handle
       });
     }
@@ -122,9 +133,9 @@ function CommentsList({imageId}) {
   return (
     
     <div className='commentsList' style={{}}>
-      <CommentsForm comms={comms} socket={socket} setComms={setComms} pos={0}></CommentsForm>
+      <CommentsForm comms={comms}  socket={socket} setComms={setComms} pos={0}></CommentsForm>
       
-      {comms.map((e,idx)=><CommentItem socket={socket} comms={comms} setComms={setComms} key={idx} item={e}></CommentItem>)}
+      {comms.map((e,idx)=><CommentItem imageId={imageId} socket={socket} comms={comms} setComms={setComms} key={idx} item={e}></CommentItem>)}
     </div>
   );
 }

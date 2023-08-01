@@ -83,11 +83,10 @@ export const patchImage =  async(id,obj)=>{
     // console.log(id, obj)
     delete obj._id;
     const {data} = await axios.patch(`${IMAGE_URL}/${id}`, obj)
-    console.log("data.data", data.data)
-    return data.data
+    return data
   }catch(err){
-    console.log(err)
-    return `${err}`;
+    // console.log(err)
+    return err.response.data
   }
 } 
 // export const patchImage =  async(id,obj)=>{

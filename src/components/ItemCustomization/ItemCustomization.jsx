@@ -20,7 +20,7 @@ import MyPopup from "../PopUp/PopUp";
 import context from "../shared/context/postsCtx"
 import TextareaWrapper from "../formsUI/TextareaWrapper/TextareWrapper";
 import EditPicture from "../EditPicture/EditPicture";
-function ItemCustomization() {
+function ItemCustomization({socket}) {
     const { imageId,mode } = useParams()
     const [open, setOpen] = useState(false);
     const [formVals, setFormVals] = useState({
@@ -63,10 +63,7 @@ function ItemCustomization() {
         desc: yup.string().required().min(10).max(100),
     })
     async function  onSave({ title, desc},{ setSubmitting }) {
-        console.log("onSave")
-        console.log([...image.pictures])
         let bool = true;
-        
         //check if there is at least one not loaded picture(by which i mean if the image is not loaded it means it will be loaded)
         if(image.pictures.length){
             bool = false
@@ -76,9 +73,6 @@ function ItemCustomization() {
             // setSubmitting(false)
         }else{
             setSubmitting(true)
-            console.log("onSave creation")
-            console.log([...image.pictures])
-
             async function  uploadImagesRecursively(arr){
                 console.log("arr", arr)
                 if(Array.isArray(arr)){
@@ -104,16 +98,14 @@ function ItemCustomization() {
 
             if(mode==='creation'){
                 await uploadImagesRecursively(image)
-                console.log("now it should create only after this statement")
                 dispatch(addImageRequestThunk({ title, desc,  pictures:image.pictures}))
             }else if(mode==='edit'){
                 for(let i=0; i<garbage.length;i++){
                     delImage(garbage[i].id)
                 }
                 await uploadImagesRecursively(image)
-                console.log("after 'uploading'")
                 const pictures = [...image.pictures]
-                dispatch(patchImageRequestThunk({desc,title, _id:imageId, pictures }))
+                dispatch(patchImageRequestThunk({desc,title, _id:imageId, pictures }, socket))
             }
             navigate('/images')
         }

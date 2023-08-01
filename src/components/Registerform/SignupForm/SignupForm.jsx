@@ -25,6 +25,7 @@ function SignupForm() {
         password: yup.string().required().min(8).max(20),
         password1: yup.string().required().min(8).max(20),
       });
+    const [resultMsg, setResultMsg] = useState("")
     async function onSave({email, password,password1},{ setSubmitting, setErrors }){
         setSpin(true)
         if(password===password1){
@@ -37,6 +38,7 @@ function SignupForm() {
             }else{
                 setSpin(false)
                 setResult(true)
+                setResultMsg(data.message)
             }
         }else{
             setErrors({ password1: "Passwords don't match" });
@@ -75,17 +77,11 @@ function SignupForm() {
                                         </div>
                                         <SubmitBtn text={"submit"} /></div>
                                         {result?<div  style={{position: "absolute",width: "fit-content",height: "fit-content", inset: 0,margin: "auto"}}>
-                                            The user has been created successfully
+                                            {resultMsg}
                                         </div>:""}
-                                        
-                                    </>}
-                                    
-                                
-                                
+                                    </>}            
                         </div>
                     </div>
-                            
-                        
                     </Form>
                 }
             </Formik>

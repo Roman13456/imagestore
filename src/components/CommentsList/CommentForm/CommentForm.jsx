@@ -145,67 +145,7 @@ function CommentsForm({idForReply, comms, setComms,pos , cb,mode,text,socket}) {
             }
         }
         
-        // if(mode?.mode==="edit"){
-        //     const copy = JSON.parse(JSON.stringify(image))
-        //     if(!copy.comments){
-        //         copy.comments = []
-        //     }
-        //     findCommentAndChangeComm(copy.comments,comment)
-        //     const data = await patchImage(copy._id,copy)
-        //     if(typeof data==="object"){
-        //         setImage(data)
-        //     }
-        //     if(pos!==0){
-        //         // console.log("cb()")
-        //         cb()
-        //     }
-        //     return
-        // }
-        // if(pos===0){
-            
-        //     const copy = JSON.parse(JSON.stringify(image))
-        //     if(!copy.comments){
-        //         copy.comments = []
-        //     }
-        //     copy.comments.unshift({
-        //         id: uuidv4(),
-        //         name:user?.nickname || "demo_user",
-        //         text:comment
-        //     })
-        //     console.log("added comm", copy)
-        //     // setSpin(true)
-            
-        //     const data = await patchImage(copy._id,copy)
-        //     if(typeof data==="object"){
-        //         setImage(data)
-        //     }
-        //     // console.log("copy",copy)
-            
-        //     // // console.log("data",data)
-        //     // // setSpin(false);
-            
-        // }else{
-        //     console.log(image)
-        //     const copy = JSON.parse(JSON.stringify(image))
-        //     if(!copy.comments){
-        //         copy.comments = []
-        //     }
-        //     findCommentAndPasteReply(copy.comments, comment)
-        //     const data = await patchImage(copy._id,copy)
-        //     if(typeof data==="object"){
-        //         setImage(data)
-        //     }
-        //     if(pos!==0){
-        //         // console.log("cb()")
-        //         cb()
-        //     }
-        // }
-        // setSpin(true)
-        // const {data} = await resetPassword(email)
-        // setResult(true)
-        // setSpin(false);
-        // setMsg(data.message)
-        // console.log(data)
+       
     }
     return (
     //   <div className="loginForm">

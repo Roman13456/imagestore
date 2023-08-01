@@ -16,6 +16,14 @@ export const checkCredentials = async (obj) => {
       return err.response;
     }
   };
+  export const confirmEmailAndCreateUser = async (token) => {
+    try {
+      const res = await axios.post(IMAGE_URL + `/email-confirmed/${token}`, {});
+      return res;
+    } catch (err) {
+      return err.response;
+    }
+  };
   export const checkToken = async (token) => {
     console.log(token)
     try {
@@ -55,3 +63,16 @@ export const checkCredentials = async (obj) => {
         return err.response;
     }
   };
+
+
+  //newly added
+  export const patchUser = async (obj) => {
+    try {
+      const res = await axios.patch(IMAGE_URL + "/user", obj);
+      return res.data;
+    } catch (err) {
+        return err.response.data;
+    }
+  };
+
+  

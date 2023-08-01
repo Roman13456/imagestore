@@ -4,7 +4,7 @@ import { patchImage } from "../../images/imageApi";
 import { delComment, delReply } from "../commentApi";
 import CommentsForm from "../CommentForm/CommentForm";
 import "./index.css"
-function CommentItem({item,param,parentId,comms, setComms,socket}) {
+function CommentItem({item,param,parentId,comms, setComms,socket,imageId}) {
   // console.log("item",item)
   // console.log("CommentItem_image",image)
   const user = useSelector((state) => state.USER);
@@ -19,6 +19,7 @@ function CommentItem({item,param,parentId,comms, setComms,socket}) {
       if(idx!==-1){
         copy.splice(idx,1)
         socket.emit('deletedComment', {
+          productId:imageId,
           userId: user._id,
           commentId
         });
@@ -41,6 +42,7 @@ function CommentItem({item,param,parentId,comms, setComms,socket}) {
           // Remove the reply from the replies array of the comment
           copy[commentIndex].replies.splice(replyIndex, 1);
           socket.emit('deletedComment', { 
+            productId:imageId,
             userId: user._id,
             commentId,
             replyId
@@ -66,7 +68,7 @@ function CommentItem({item,param,parentId,comms, setComms,socket}) {
             
             {form?<CommentsForm comms={comms} setComms={setComms} socket={socket} idForReply = {!parentId?item._id:parentId} mode={mode} text={'@'+item?.nickname.nickname+" "} pos={parentId?2:1} cb={()=>setForm(false)}></CommentsForm>:""}
             
-            {item?.replies?.map((e,idx)=><CommentItem socket={socket}  comms={comms} setComms={setComms} param={showComms?0:1} parentId={item._id} item={e} key={idx}/>)}
+            {item?.replies?.map((e,idx)=><CommentItem imageId={imageId} socket={socket}  comms={comms} setComms={setComms} param={showComms?0:1} parentId={item._id} item={e} key={idx}/>)}
             </>
           }
             
