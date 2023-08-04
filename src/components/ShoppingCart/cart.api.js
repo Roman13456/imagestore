@@ -27,6 +27,15 @@ export const fetchCart = async (id) => {
       return err.response.data
     }
   };
+  export const deltItemFromCart = async (cartId,itemId) => {
+    try {
+      const res = await axios.delete(COMMENTS_URL+`/${cartId}/products/${itemId}`);
+      return res.data
+    } catch (err) {
+      // console.log(err.response);
+      return err.response.data
+    }
+  };
   
   export const deleteCart = async (id) => {
     try {

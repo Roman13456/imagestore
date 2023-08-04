@@ -10,10 +10,11 @@ import ImageAdjust from '../../ImageAdjust/ImageAdjust';
 import CommentsList from '../CommentsList/CommentsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductRequestThunk } from '../../store/actions/cart.actions';
+import { setCart } from '../../store/reducers/shoppingcart.reducers';
 // import myImage from './back_1.jpg';
 // import Container from '@mui/material/Container';
 // import Link from '@mui/material/Link';
-function PostPage({socket}) {
+function PostPage({socket,cartGuestMode}) {
   const { imageId } = useParams();
   const user = useSelector((state) => state.USER);
   const cart = useSelector((state)=>state.CART);
@@ -41,7 +42,7 @@ function PostPage({socket}) {
   }, []);
   useEffect(()=>{
     let bool = false;
-    cart?.products.forEach(e=>{
+    cart?.products?.forEach(e=>{
       if(e._id===imageId){
         bool=true
       }
@@ -79,8 +80,15 @@ function PostPage({socket}) {
     }, [chosenPic]);
     
   function addToCart(){
-    dispatch(addProductRequestThunk(cart._id,image ))
+    if(cartGuestMode){
+      const storedCart = JSON.parse(localStorage.getItem('cart'));
+      localStorage.setItem('cart', JSON.stringify([...storedCart, image._id]));
+      dispatch(setCart({products: [...cart.products, image]}))
+    }else{
+      dispatch(addProductRequestThunk(cart._id,image ))
+    }
   }
+  //|| !user
   return (
     
     <div className='imagePage' style={{maxWidth:"1640px",margin:"auto",}}>
@@ -110,7 +118,7 @@ function PostPage({socket}) {
             <div className='desc'>
               <h4>Опис товару:</h4>
               <p>{image?.desc || "demo"}</p>
-              <Button variant="contained" disabled={isAddedToCart || !user} onClick={addToCart}>{isAddedToCart?"Already added to cart":"Add to cart"}</Button>
+              <Button variant="contained" disabled={isAddedToCart } onClick={addToCart}>{isAddedToCart?"Already added to cart":"Add to cart"}</Button>
               {!user?<p>You should be signed up in order to add pictures to cart</p>:""}
             </div>
           </div>

@@ -1,0 +1,44 @@
+.cartItemContainer .imageContainer{
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    max-width: 20%;
+    width: 100%;
+    height: 80px;
+}
+.cartItemContainer .imageContainer img{
+    position: absolute;
+    inset: 0;
+    margin: auto;
+}
+.cartItemContainer{
+    /* padding: 5px; */
+    padding: 5px 0;
+}
+.cartItemContainer .cartDescContents{
+    position: relative;
+    margin-left: 5px;
+    max-width: 70%;
+    width: 100%;
+}
+.cartItemContainer .cartDescContents p{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.cartItemContainer .delBtnContainer{
+    max-width: 10%;
+    width: 100%;
+    position: relative;
+}
+.cartItemContainer .delBtnContainer button{
+    position: absolute;
+    right: 0;
+    top:0;
+    bottom:0;
+    margin: auto;
+    width: 30px;
+    border:  none;
+    background-color: transparent;
+    height: 30px;
+}
